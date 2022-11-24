@@ -1,14 +1,24 @@
+PROGRAM  = jagged_2d
 CC = gcc
 BIN = bin
 
-CFILES = main.c
+SRC = src
+OBJ = obj
 
-all:
-	$(CC) -o $(BIN) $(CFILES)
+CFILES = $(wildcard $(SRC)/*.c)
+OBJS = $(patsubst $(SRC)/%.c,$(OBJ)/%.o,$(CFILES))
+
+all:$(BIN)
+
+$(OBJ)/%.o:$(SRC)/%.c
+	$(CC) -c $< -o $@
+
+$(BIN):$(OBJS)
+	$(CC) -o $@ $^
 
 run:
 	./$(BIN)
 
 clean:
 	rm -f $(BIN)
-	rm -f *.o
+	rm -f *.o $(OBJ)/*.o
